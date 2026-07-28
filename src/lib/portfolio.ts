@@ -50,7 +50,7 @@ export const CONTENT_DEFAULTS: ContentMap = {
   digitals_url: "",
   agency_name: "Elite Model Management Worldwide",
   agency_cities: "New York • Paris • Milan",
-  contact_email: "bookings@example.com",
+  contact_email: "terrymasila90@gmail.com",
 };
 
 Object.assign(CONTENT_DEFAULTS, {

@@ -87,4 +87,4 @@ INSERT INTO public.site_content (key, value) VALUES
   ('digitals_url', ''),
   ('agency_name', 'Elite Model Management Worldwide'),
   ('agency_cities', 'New York • Paris • Milan'),
-  ('contact_email', 'bookings@example.com');
+  ('contact_email', 'terrymasila90@gmail.com');
