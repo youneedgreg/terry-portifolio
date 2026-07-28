@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/utils";
 import { ID, OAuthProvider } from "appwrite";
 
 import { account } from "@/integrations/appwrite/client";
@@ -58,7 +59,7 @@ function AuthPage() {
         void navigate({ to: "/" });
       }
     } catch (err) {
-      toast.error((err as Error).message);
+      toast.error(getErrorMessage(err));
     } finally {
       setBusy(false);
     }
@@ -72,7 +73,7 @@ function AuthPage() {
         window.location.origin,
       );
     } catch (err) {
-      toast.error((err as Error).message);
+      toast.error(getErrorMessage(err));
     }
   };
 
