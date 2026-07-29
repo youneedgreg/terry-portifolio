@@ -3,7 +3,8 @@ import { Client, Account, Databases, Storage } from "appwrite";
 const ENDPOINT = import.meta.env.VITE_APPWRITE_ENDPOINT || "https://fra.cloud.appwrite.io/v1";
 const PROJECT_ID = import.meta.env.VITE_APPWRITE_PROJECT_ID || "terry-portfolio";
 
-export const APPWRITE_DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID || "6a685ea10023cb5699c5";
+export const APPWRITE_DATABASE_ID =
+  import.meta.env.VITE_APPWRITE_DATABASE_ID || "6a685ea10023cb5699c5";
 export const BUCKET_PORTFOLIO = import.meta.env.VITE_APPWRITE_BUCKET_ID || "portfolio";
 
 export const COLLECTIONS = {

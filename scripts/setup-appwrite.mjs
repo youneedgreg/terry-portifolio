@@ -22,10 +22,7 @@ if (!API_KEY) {
   process.exit(1);
 }
 
-const client = new Client()
-  .setEndpoint(ENDPOINT)
-  .setProject(PROJECT_ID)
-  .setKey(API_KEY);
+const client = new Client().setEndpoint(ENDPOINT).setProject(PROJECT_ID).setKey(API_KEY);
 
 const databases = new Databases(client);
 const storage = new Storage(client);
@@ -80,23 +77,23 @@ async function main() {
       'create("users")',
       'update("users")',
       'delete("users")',
-    ])
+    ]),
   );
   for (const [key, size, required, def] of [
-    ["url",        255, false, ""],
-    ["caption",    255, false, ""],
-    ["credit",     255, false, ""],
-    ["section",    100, false, "editorial"],
+    ["url", 255, false, ""],
+    ["caption", 255, false, ""],
+    ["credit", 255, false, ""],
+    ["section", 100, false, "editorial"],
   ]) {
     await createOrSkip(`attr: ${key}`, () =>
-      databases.createStringAttribute(DB_ID, COLLECTIONS.photos, key, size, required, def)
+      databases.createStringAttribute(DB_ID, COLLECTIONS.photos, key, size, required, def),
     );
   }
   await createOrSkip("attr: sort_order", () =>
-    databases.createIntegerAttribute(DB_ID, COLLECTIONS.photos, "sort_order", false, 0)
+    databases.createIntegerAttribute(DB_ID, COLLECTIONS.photos, "sort_order", false, 0),
   );
   await createOrSkip("attr: is_visible", () =>
-    databases.createBooleanAttribute(DB_ID, COLLECTIONS.photos, "is_visible", false, true)
+    databases.createBooleanAttribute(DB_ID, COLLECTIONS.photos, "is_visible", false, true),
   );
 
   // ── clients collection ────────────────────────────────────────────────────
@@ -107,19 +104,19 @@ async function main() {
       'create("users")',
       'update("users")',
       'delete("users")',
-    ])
+    ]),
   );
   for (const [key, size, required, def] of [
-    ["name",     255, true,  null],
+    ["name", 255, true, null],
     ["logo_url", 255, false, ""],
-    ["link",     255, false, ""],
+    ["link", 255, false, ""],
   ]) {
     await createOrSkip(`attr: ${key}`, () =>
-      databases.createStringAttribute(DB_ID, COLLECTIONS.clients, key, size, required, def)
+      databases.createStringAttribute(DB_ID, COLLECTIONS.clients, key, size, required, def),
     );
   }
   await createOrSkip("attr: sort_order", () =>
-    databases.createIntegerAttribute(DB_ID, COLLECTIONS.clients, "sort_order", false, 0)
+    databases.createIntegerAttribute(DB_ID, COLLECTIONS.clients, "sort_order", false, 0),
   );
 
   // ── social_links collection ───────────────────────────────────────────────
@@ -130,18 +127,18 @@ async function main() {
       'create("users")',
       'update("users")',
       'delete("users")',
-    ])
+    ]),
   );
   for (const [key, size, required, def] of [
-    ["platform", 100, true,  null],
-    ["url",      255, true,  null],
+    ["platform", 100, true, null],
+    ["url", 255, true, null],
   ]) {
     await createOrSkip(`attr: ${key}`, () =>
-      databases.createStringAttribute(DB_ID, COLLECTIONS.social_links, key, size, required, def)
+      databases.createStringAttribute(DB_ID, COLLECTIONS.social_links, key, size, required, def),
     );
   }
   await createOrSkip("attr: sort_order", () =>
-    databases.createIntegerAttribute(DB_ID, COLLECTIONS.social_links, "sort_order", false, 0)
+    databases.createIntegerAttribute(DB_ID, COLLECTIONS.social_links, "sort_order", false, 0),
   );
 
   // ── site_content collection ───────────────────────────────────────────────
@@ -152,14 +149,14 @@ async function main() {
       'create("users")',
       'update("users")',
       'delete("users")',
-    ])
+    ]),
   );
   for (const [key, size, required] of [
-    ["key",   255, true],
+    ["key", 255, true],
     ["value", 5000, false],
   ]) {
     await createOrSkip(`attr: ${key}`, () =>
-      databases.createStringAttribute(DB_ID, COLLECTIONS.site_content, key, size, required)
+      databases.createStringAttribute(DB_ID, COLLECTIONS.site_content, key, size, required),
     );
   }
 
@@ -171,10 +168,10 @@ async function main() {
       "Portfolio",
       ['read("any")', 'create("users")', 'update("users")', 'delete("users")'],
       undefined, // fileSecurity
-      true,      // enabled
+      true, // enabled
       50 * 1024 * 1024, // 50 MB max file size
-      ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"]
-    )
+      ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"],
+    ),
   );
 
   console.log("\n✅ All done! Your Appwrite backend is ready.\n");
