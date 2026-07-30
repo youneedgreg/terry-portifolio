@@ -219,8 +219,8 @@ function Index() {
           className="absolute inset-0 h-full w-full animate-[scale-in_1.4s_cubic-bezier(0.16,1,0.3,1)_both]"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/40 via-transparent to-foreground/20" />
-        <div className="absolute inset-0 flex flex-col justify-end p-6 pb-16 md:p-12 md:pb-20">
-          <h1 className="animate-[fade-up_0.9s_cubic-bezier(0.16,1,0.3,1)_both] font-serif text-[16vw] italic leading-[0.85] tracking-tighter text-background md:text-[12vw]">
+        <div className="pointer-events-none absolute inset-0 flex flex-col justify-end p-6 pb-16 md:p-12 md:pb-20">
+          <h1 className="pointer-events-auto animate-[fade-up_0.9s_cubic-bezier(0.16,1,0.3,1)_both] font-serif text-[16vw] italic leading-[0.85] tracking-tighter text-background md:text-[12vw]">
             <EditableText
               as="span"
               value={content.first_name}
