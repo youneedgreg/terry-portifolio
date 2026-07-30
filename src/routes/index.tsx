@@ -215,6 +215,7 @@ function Index() {
           onUpload={replaceContentImage("hero_url")}
           priority
           label="Replace hero"
+          buttonClassName="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
           className="absolute inset-0 h-full w-full animate-[scale-in_1.4s_cubic-bezier(0.16,1,0.3,1)_both]"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/40 via-transparent to-foreground/20" />

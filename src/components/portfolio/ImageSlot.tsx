@@ -11,6 +11,7 @@ type Props = {
   priority?: boolean;
   label?: string;
   children?: React.ReactNode;
+  buttonClassName?: string;
 };
 
 export function ImageSlot({
@@ -23,6 +24,7 @@ export function ImageSlot({
   priority = false,
   label = "Replace photo",
   children,
+  buttonClassName,
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
@@ -59,7 +61,7 @@ export function ImageSlot({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={busy}
-            className="absolute right-4 top-4 z-20 inline-flex items-center gap-2 rounded-full bg-card/95 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.2em] text-accent shadow-sm backdrop-blur transition-opacity hover:bg-card"
+            className={`${buttonClassName || "absolute right-4 top-4"} z-20 inline-flex items-center gap-2 rounded-full bg-card/95 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.2em] text-accent shadow-sm backdrop-blur transition-opacity hover:bg-card`}
           >
             {busy ? <Loader2 className="size-3 animate-spin" /> : <ImageUp className="size-3" />}
             {busy ? "Uploading" : label}
