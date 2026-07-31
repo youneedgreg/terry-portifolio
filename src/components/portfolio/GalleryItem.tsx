@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Trash2, Home } from "lucide-react";
 
 import { EditableText } from "@/components/portfolio/EditableText";
 import { ImageSlot } from "@/components/portfolio/ImageSlot";
@@ -12,6 +12,7 @@ export function GalleryItem({
   onReplace,
   onField,
   onDelete,
+  onToggleHome,
 }: {
   photo: Photo;
   canEdit: boolean;
@@ -20,6 +21,7 @@ export function GalleryItem({
   onReplace: (file: File) => Promise<void>;
   onField: (field: "caption" | "credit", value: string) => Promise<void>;
   onDelete: () => Promise<void>;
+  onToggleHome?: (val: boolean) => Promise<void>;
 }) {
   return (
     <figure className={indented ? "md:ml-24" : undefined}>
@@ -48,13 +50,26 @@ export function GalleryItem({
           />
         </span>
         {canEdit && (
-          <button
-            type="button"
-            onClick={() => void onDelete()}
-            className="inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest text-destructive"
-          >
-            <Trash2 className="size-3" /> Remove
-          </button>
+          <div className="flex items-center gap-4">
+            {onToggleHome && (
+              <button
+                type="button"
+                onClick={() => void onToggleHome(!photo.show_on_home)}
+                className={`inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest transition-colors ${
+                  photo.show_on_home ? "text-accent" : "text-muted-foreground hover:text-accent"
+                }`}
+              >
+                <Home className="size-3" /> {photo.show_on_home ? "On Home" : "Show on Home"}
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => void onDelete()}
+              className="inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest text-destructive"
+            >
+              <Trash2 className="size-3" /> Remove
+            </button>
+          </div>
         )}
       </figcaption>
     </figure>

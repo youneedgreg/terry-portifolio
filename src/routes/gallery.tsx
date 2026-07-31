@@ -9,12 +9,7 @@ import { usePhotoAdmin } from "@/hooks/use-photo-admin";
 import { EditableText } from "@/components/portfolio/EditableText";
 import { GalleryItem } from "@/components/portfolio/GalleryItem";
 import { SocialLinks } from "@/components/portfolio/SocialLinks";
-import {
-  CONTENT_DEFAULTS,
-  fetchContent,
-  fetchPhotos,
-  saveContent,
-} from "@/lib/portfolio";
+import { CONTENT_DEFAULTS, fetchContent, fetchPhotos, saveContent } from "@/lib/portfolio";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -28,8 +23,7 @@ export const Route = createFileRoute("/gallery")({
       { property: "og:title", content: "Gallery — terry masila" },
       {
         property: "og:description",
-        content:
-          "Browse the complete photographic archive of model terry masila.",
+        content: "Browse the complete photographic archive of model terry masila.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -52,16 +46,13 @@ function GalleryPage() {
   });
   const photosQuery = useQuery({ queryKey: ["photos"], queryFn: fetchPhotos });
   const content = contentQuery.data ?? CONTENT_DEFAULTS;
-  const gallery = (photosQuery.data ?? []).filter(
-    (p) => p.section === "editorial",
-  );
+  const gallery = (photosQuery.data ?? []).filter((p) => p.section === "editorial");
 
-  const { replacePhotoImage, updatePhotoField, deletePhoto, addPhotos } =
+  const { replacePhotoImage, updatePhotoField, deletePhoto, addPhotos, togglePhotoHome } =
     usePhotoAdmin();
 
   const contentMutation = useMutation({
-    mutationFn: ({ key, value }: { key: string; value: string }) =>
-      saveContent(key, value),
+    mutationFn: ({ key, value }: { key: string; value: string }) => saveContent(key, value),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["site_content"] });
       toast.success("Saved");
@@ -89,8 +80,7 @@ function GalleryPage() {
           to="/"
           className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground transition-opacity hover:opacity-60"
         >
-          <ArrowLeft className="size-3" /> {content.first_name}{" "}
-          {content.last_name}
+          <ArrowLeft className="size-3" /> {content.first_name} {content.last_name}
         </Link>
         {isOwner && (
           <button
@@ -142,10 +132,9 @@ function GalleryPage() {
                 canEdit={canEdit}
                 aspect={i % 5 === 0 ? "aspect-[2/3]" : "aspect-[4/5]"}
                 onReplace={(file) => replacePhotoImage(photo, file)}
-                onField={(field, value) =>
-                  updatePhotoField(photo, field, value)
-                }
+                onField={(field, value) => updatePhotoField(photo, field, value)}
                 onDelete={() => deletePhoto(photo)}
+                onToggleHome={(val) => togglePhotoHome(photo, val)}
               />
             ))}
 

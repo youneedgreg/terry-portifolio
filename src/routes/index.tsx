@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { ID } from "appwrite";
 import { databases, APPWRITE_DATABASE_ID, COLLECTIONS } from "@/integrations/appwrite/client";
 import { useOwner } from "@/hooks/use-owner";
+import { usePhotoAdmin } from "@/hooks/use-photo-admin";
 import { EditableText } from "@/components/portfolio/EditableText";
 import { ImageSlot } from "@/components/portfolio/ImageSlot";
 import { GalleryItem } from "@/components/portfolio/GalleryItem";
@@ -67,7 +68,7 @@ function Index() {
 
   const content = contentQuery.data ?? CONTENT_DEFAULTS;
   const photos = photosQuery.data ?? [];
-  const gallery = photos.filter((p) => p.section === "editorial");
+  const gallery = photos.filter((p) => p.section === "editorial" && p.show_on_home);
 
   const contentMutation = useMutation({
     mutationFn: ({ key, value }: { key: string; value: string }) => saveContent(key, value),
@@ -91,58 +92,13 @@ function Index() {
     }
   };
 
-  const replacePhotoImage = async (photo: Photo, file: File) => {
-    try {
-      const path = await uploadPhotoFile(file);
-      await databases.updateDocument(APPWRITE_DATABASE_ID, COLLECTIONS.PHOTOS, photo.id, {
-        url: path,
-      });
-      void queryClient.invalidateQueries({ queryKey: ["photos"] });
-      toast.success("Photo updated");
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
-  };
+  const { replacePhotoImage, updatePhotoField, deletePhoto, addPhotos, togglePhotoHome } =
+    usePhotoAdmin();
 
-  const updatePhotoField = async (photo: Photo, field: "caption" | "credit", value: string) => {
-    try {
-      const patch = field === "caption" ? { caption: value } : { credit: value };
-      await databases.updateDocument(APPWRITE_DATABASE_ID, COLLECTIONS.PHOTOS, photo.id, patch);
-      void queryClient.invalidateQueries({ queryKey: ["photos"] });
-      toast.success("Saved");
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
-  };
-
-  const deletePhoto = async (photo: Photo) => {
-    try {
-      await databases.deleteDocument(APPWRITE_DATABASE_ID, COLLECTIONS.PHOTOS, photo.id);
-      void queryClient.invalidateQueries({ queryKey: ["photos"] });
-      toast.success("Photo removed");
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
-  };
-
-  const addPhotos = async (files: FileList | null) => {
-    if (!files?.length) return;
+  const handleAdd = async (files: FileList | null) => {
     setAdding(true);
     try {
-      let order = gallery.length;
-      for (const file of Array.from(files)) {
-        const path = await uploadPhotoFile(file);
-        await databases.createDocument(APPWRITE_DATABASE_ID, COLLECTIONS.PHOTOS, ID.unique(), {
-          url: path,
-          section: "editorial",
-          sort_order: order++,
-          is_visible: true,
-        });
-      }
-      void queryClient.invalidateQueries({ queryKey: ["photos"] });
-      toast.success("Added to gallery");
-    } catch (e) {
-      toast.error((e as Error).message);
+      await addPhotos(files, gallery.length);
     } finally {
       setAdding(false);
     }
@@ -323,6 +279,7 @@ function Index() {
                     onReplace={(file) => replacePhotoImage(photo, file)}
                     onField={(field, value) => updatePhotoField(photo, field, value)}
                     onDelete={() => deletePhoto(photo)}
+                    onToggleHome={(val) => togglePhotoHome(photo, val)}
                   />
                 ))}
             </div>
@@ -338,6 +295,7 @@ function Index() {
                     onReplace={(file) => replacePhotoImage(photo, file)}
                     onField={(field, value) => updatePhotoField(photo, field, value)}
                     onDelete={() => deletePhoto(photo)}
+                    onToggleHome={(val) => togglePhotoHome(photo, val)}
                   />
                 ))}
 
@@ -349,7 +307,7 @@ function Index() {
                     accept="image/*"
                     multiple
                     className="hidden"
-                    onChange={(e) => void addPhotos(e.target.files)}
+                    onChange={(e) => void handleAdd(e.target.files)}
                   />
                   <button
                     type="button"

@@ -95,6 +95,9 @@ async function main() {
   await createOrSkip("attr: is_visible", () =>
     databases.createBooleanAttribute(DB_ID, COLLECTIONS.photos, "is_visible", false, true),
   );
+  await createOrSkip("attr: show_on_home", () =>
+    databases.createBooleanAttribute(DB_ID, COLLECTIONS.photos, "show_on_home", false, false),
+  );
 
   // ── clients collection ────────────────────────────────────────────────────
   console.log("\n📁 clients");

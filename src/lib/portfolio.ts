@@ -16,6 +16,7 @@ export type Photo = {
   section: string;
   sort_order: number;
   is_visible: boolean;
+  show_on_home: boolean;
 };
 
 export type ContentMap = Record<string, string>;
@@ -100,6 +101,7 @@ export async function fetchPhotos(): Promise<Photo[]> {
       section: doc.section || "editorial",
       sort_order: doc.sort_order ?? 0,
       is_visible: doc.is_visible ?? true,
+      show_on_home: doc.show_on_home ?? false,
     }));
   } catch (error) {
     console.warn("[Appwrite] fetchPhotos warning:", error);

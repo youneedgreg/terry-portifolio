@@ -47,6 +47,18 @@ export function usePhotoAdmin() {
     }
   };
 
+  const togglePhotoHome = async (photo: Photo, showOnHome: boolean): Promise<void> => {
+    try {
+      await databases.updateDocument(APPWRITE_DATABASE_ID, COLLECTIONS.PHOTOS, photo.id, {
+        show_on_home: showOnHome,
+      });
+      invalidate();
+      toast.success(showOnHome ? "Added to home screen" : "Removed from home screen");
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  };
+
   const addPhotos = async (files: FileList | null, startOrder: number): Promise<void> => {
     if (!files?.length) return;
     try {
@@ -58,6 +70,7 @@ export function usePhotoAdmin() {
           section: "editorial",
           sort_order: order++,
           is_visible: true,
+          show_on_home: false,
         });
       }
       invalidate();
@@ -67,5 +80,5 @@ export function usePhotoAdmin() {
     }
   };
 
-  return { replacePhotoImage, updatePhotoField, deletePhoto, addPhotos };
+  return { replacePhotoImage, updatePhotoField, deletePhoto, addPhotos, togglePhotoHome };
 }
