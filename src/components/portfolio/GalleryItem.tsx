@@ -59,7 +59,8 @@ export function GalleryItem({
                   photo.show_on_home ? "text-accent" : "text-muted-foreground hover:text-accent"
                 }`}
               >
-                <Home className="size-3" /> {photo.show_on_home ? "On Home" : "Show on Home"}
+                <Home className="size-3" />{" "}
+                {photo.show_on_home ? "Remove from Home" : "Show on Home"}
               </button>
             )}
             <button
